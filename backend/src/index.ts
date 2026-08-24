@@ -1,5 +1,6 @@
 import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
+import metricsRouter from "./routes/metrics";
 import subscriptionsRouter from "./routes/subscriptions";
 
 const app = express();
@@ -9,6 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/subscriptions", subscriptionsRouter);
+app.use("/api/metrics", metricsRouter);
 
 app.use((_req: Request, res: Response) => {
   res.status(404).json({ message: "Not found." });
