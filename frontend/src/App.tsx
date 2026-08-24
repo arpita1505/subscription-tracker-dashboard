@@ -1,7 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
-import { createSubscription, fetchMetrics, fetchSubscriptions } from "./api/client";
+import {
+  createSubscription,
+  deleteSubscription,
+  fetchMetrics,
+  fetchSubscriptions,
+  toggleSubscription,
+} from "./api/client";
 import { MetricsCards } from "./components/MetricsCards";
 import { SubscriptionForm } from "./components/SubscriptionForm";
+import { SubscriptionGrid } from "./components/SubscriptionGrid";
 import { Metrics, Subscription } from "./types";
 
 function App() {
@@ -9,6 +16,7 @@ function App() {
   const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [togglingIds, setTogglingIds] = useState<Set<number>>(new Set());
 
   const loadData = useCallback(async () => {
     setError(null);
@@ -30,6 +38,33 @@ function App() {
   const handleCreate = async (input: Parameters<typeof createSubscription>[0]) => {
     await createSubscription(input);
     await loadData();
+  };
+
+  const handleToggle = async (id: number) => {
+    setTogglingIds((prev) => new Set(prev).add(id));
+    setError(null);
+    try {
+      await toggleSubscription(id);
+      await loadData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to toggle subscription.");
+    } finally {
+      setTogglingIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    setError(null);
+    try {
+      await deleteSubscription(id);
+      await loadData();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to delete subscription.");
+    }
   };
 
   return (
@@ -57,6 +92,14 @@ function App() {
         {loading && <p className="text-sm text-slate-500">Loading…</p>}
         {!loading && subscriptions.length === 0 && (
           <p className="text-sm text-slate-500">No subscriptions yet — add one above.</p>
+        )}
+        {!loading && subscriptions.length > 0 && (
+          <SubscriptionGrid
+            subscriptions={subscriptions}
+            onToggle={handleToggle}
+            onDelete={handleDelete}
+            togglingIds={togglingIds}
+          />
         )}
       </main>
     </div>
