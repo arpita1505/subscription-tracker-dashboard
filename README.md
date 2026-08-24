@@ -119,13 +119,15 @@ Requires Node.js 18+.
 
 ```bash
 # One-time setup
-cd backend && npm install && npm run prisma:migrate && npm run seed && cd ..
+cd backend && npm install && cp .env.example .env && npm run prisma:migrate && npm run seed && cd ..
 cd frontend && npm install && cd ..
 npm install    # installs `concurrently` at the repo root
 
 # Run both servers together
 npm run dev    # backend on http://localhost:4000, frontend on http://localhost:5173 (or next free port)
 ```
+
+`backend/.env` is gitignored; `backend/.env.example` holds the defaults (the SQLite file path and port 4000) that the `cp` step above copies into place.
 
 `npm run dev` at the repo root uses `concurrently` to run the backend and
 frontend dev servers in one terminal, labeled `[backend]`/`[frontend]`. To
