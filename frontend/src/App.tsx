@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { createSubscription, fetchMetrics, fetchSubscriptions } from "./api/client";
+import { MetricsCards } from "./components/MetricsCards";
 import { SubscriptionForm } from "./components/SubscriptionForm";
 import { Metrics, Subscription } from "./types";
 
@@ -49,14 +50,13 @@ function App() {
           </div>
         )}
 
+        <MetricsCards metrics={metrics} />
+
         <SubscriptionForm onSubmit={handleCreate} />
 
-        {loading ? (
-          <p className="text-sm text-slate-500">Loading…</p>
-        ) : (
-          <p className="text-sm text-slate-500">
-            {subscriptions.length} subscription(s) · burn: {metrics?.totalMonthlyBurn}
-          </p>
+        {loading && <p className="text-sm text-slate-500">Loading…</p>}
+        {!loading && subscriptions.length === 0 && (
+          <p className="text-sm text-slate-500">No subscriptions yet — add one above.</p>
         )}
       </main>
     </div>
