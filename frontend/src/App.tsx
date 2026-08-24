@@ -9,7 +9,7 @@ import {
 import { MetricsCards } from "./components/MetricsCards";
 import { SubscriptionForm } from "./components/SubscriptionForm";
 import { SubscriptionGrid } from "./components/SubscriptionGrid";
-import { Metrics, Subscription } from "./types";
+import type { Metrics, Subscription } from "./types";
 
 function App() {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);

@@ -1,4 +1,4 @@
-import { Metrics } from "../types";
+import type { Metrics } from "../types";
 
 const currencyFormatter = new Intl.NumberFormat("en-US", {
   style: "currency",

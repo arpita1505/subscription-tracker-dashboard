@@ -1,4 +1,4 @@
-import { Metrics, NewSubscriptionInput, Subscription } from "../types";
+import type { Metrics, NewSubscriptionInput, Subscription } from "../types";
 
 async function handleResponse<T>(res: Response): Promise<T> {
   if (!res.ok) {

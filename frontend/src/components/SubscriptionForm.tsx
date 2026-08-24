@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { BillingCycle } from "../types";
+import type { BillingCycle } from "../types";
 
 interface SubscriptionFormProps {
   onSubmit: (input: {
