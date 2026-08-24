@@ -44,8 +44,12 @@ function App() {
     setTogglingIds((prev) => new Set(prev).add(id));
     setError(null);
     try {
-      await toggleSubscription(id);
-      await loadData();
+      // Update just this row and re-pull metrics, rather than reloading the
+      // whole list, so the row's grey-out and the burn rate card both move
+      // as soon as the server confirms — no full-table re-render flicker.
+      const updated = await toggleSubscription(id);
+      setSubscriptions((prev) => prev.map((sub) => (sub.id === id ? updated : sub)));
+      setMetrics(await fetchMetrics());
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to toggle subscription.");
     } finally {
@@ -61,7 +65,8 @@ function App() {
     setError(null);
     try {
       await deleteSubscription(id);
-      await loadData();
+      setSubscriptions((prev) => prev.filter((sub) => sub.id !== id));
+      setMetrics(await fetchMetrics());
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to delete subscription.");
     }
