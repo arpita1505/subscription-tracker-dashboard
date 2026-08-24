@@ -118,21 +118,28 @@ Validation (400 with a descriptive `message` on failure):
 Requires Node.js 18+.
 
 ```bash
-# 1. Backend
-cd backend
-npm install
-npm run prisma:migrate     # creates SQLite db + applies migrations
-npm run seed                # seeds 8 sample subscriptions
-npm run dev                  # http://localhost:4000
+# One-time setup
+cd backend && npm install && npm run prisma:migrate && npm run seed && cd ..
+cd frontend && npm install && cd ..
+npm install    # installs `concurrently` at the repo root
 
-# 2. Frontend (separate terminal)
-cd frontend
-npm install
-npm run dev                  # http://localhost:5173 (or next free port)
+# Run both servers together
+npm run dev    # backend on http://localhost:4000, frontend on http://localhost:5173 (or next free port)
 ```
+
+`npm run dev` at the repo root uses `concurrently` to run the backend and
+frontend dev servers in one terminal, labeled `[backend]`/`[frontend]`. To
+run them separately instead (e.g. in two terminals), use `npm run dev`
+inside `backend/` and `frontend/` respectively.
 
 Open the frontend URL — the Vite dev server proxies API calls to the
 backend automatically.
+
+### Tests
+
+```bash
+npm test    # from the repo root — runs the backend vitest suite
+```
 
 ### Other useful commands
 
