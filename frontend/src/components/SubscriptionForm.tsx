@@ -1,4 +1,5 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import type { FormEvent } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import type { BillingCycle } from "../types";
@@ -112,7 +113,7 @@ export function SubscriptionForm({ onSubmit }: SubscriptionFormProps) {
         <DatePicker
           id="nextRenewalDate"
           selected={nextRenewalDate}
-          onChange={(date) => setNextRenewalDate(date)}
+          onChange={(date: Date | null) => setNextRenewalDate(date)}
           placeholderText="Select a date"
           dateFormat="MMM d, yyyy"
           minDate={new Date()}
