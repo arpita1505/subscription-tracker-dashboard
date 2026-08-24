@@ -7,3 +7,5 @@ build/
 .DS_Store
 backend/prisma/dev.db
 backend/prisma/dev.db-journal
+*.db
+*.db-journal
