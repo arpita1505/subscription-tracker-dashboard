@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// SQLite has no native enum type in Prisma; billingCycle is stored as a
+// String and constrained to "MONTHLY" | "YEARLY" by server-side validation.
+model Subscription {
+  id              Int      @id @default(autoincrement())
+  serviceName     String
+  cost            Float
+  billingCycle    String
+  nextRenewalDate DateTime
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
